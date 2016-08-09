@@ -76,6 +76,10 @@ const HeaderRow = React.createClass({
     return <SortableHeaderCell columnKey={column.key} onSort={this.props.onSort} sortDirection={sortDirection}/>;
   },
 
+  getMergededHeaderCell(subColumn){
+    return <MergeHeaderCell subcolumn={subColumn}/>;
+  },
+
   getHeaderRenderer(column) {
     let renderer;
     if (column.headerRenderer) {
@@ -93,7 +97,8 @@ const HeaderRow = React.createClass({
         break;
       }
     }
-    return renderer;
+
+    return (column.mergered) ? this.getMergededHeaderCell(renderer) : renderer;
   },
 
   getStyle(): HeaderRowStyle {
