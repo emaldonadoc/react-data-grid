@@ -116,6 +116,7 @@ const Header = React.createClass({
         getValidFilterValues={this.props.getValidFilterValues}
         />);
     });
+
     return headerRows;
   },
 

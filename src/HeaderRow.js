@@ -106,33 +106,40 @@ const HeaderRow = React.createClass({
     };
   },
 
+  generateHeaderCell(i, cells, lockedCells) {
+
+    console.log(['Index here',  i]);
+
+
+    let column = this.getColumn(this.props.columns, i);
+    let _renderer = this.getHeaderRenderer(column);
+    if (column.key === 'select-row' && this.props.rowType === 'filter') {
+      _renderer = <div></div>;
+    }
+
+    let HeaderCell = column.draggable ? this.props.draggableHeaderCell : BaseHeaderCell;
+
+    let cell = (
+      <HeaderCell
+        ref={i}
+        key={i}
+        height={this.props.height}
+        column={column}
+        renderer={_renderer}
+        resizing={this.props.resizing === column}
+        onResize={this.props.onColumnResize}
+        onResizeEnd={this.props.onColumnResizeEnd}
+        />
+    );
+
+    (column.locked) ? lockedCells.push(cell) : cells.push(cell);
+  },
+
   getCells(): Array<HeaderCell> {
     let cells = [];
     let lockedCells = [];
     for (let i = 0, len = this.getSize(this.props.columns); i < len; i++) {
-      let column = this.getColumn(this.props.columns, i);
-      let _renderer = this.getHeaderRenderer(column);
-      if (column.key === 'select-row' && this.props.rowType === 'filter') {
-        _renderer = <div></div>;
-      }
-      let HeaderCell = column.draggable ? this.props.draggableHeaderCell : BaseHeaderCell;
-      let cell = (
-        <HeaderCell
-          ref={i}
-          key={i}
-          height={this.props.height}
-          column={column}
-          renderer={_renderer}
-          resizing={this.props.resizing === column}
-          onResize={this.props.onColumnResize}
-          onResizeEnd={this.props.onColumnResizeEnd}
-          />
-      );
-      if (column.locked) {
-        lockedCells.push(cell);
-      } else {
-        cells.push(cell);
-      }
+      this.generateHeaderCell(i, cells, lockedCells);
     }
 
     return cells.concat(lockedCells);
