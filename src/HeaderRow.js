@@ -107,10 +107,6 @@ const HeaderRow = React.createClass({
   },
 
   generateHeaderCell(i, cells, lockedCells) {
-
-    console.log(['Index here',  i]);
-
-
     let column = this.getColumn(this.props.columns, i);
     let _renderer = this.getHeaderRenderer(column);
     if (column.key === 'select-row' && this.props.rowType === 'filter') {
@@ -131,7 +127,7 @@ const HeaderRow = React.createClass({
         onResizeEnd={this.props.onColumnResizeEnd}
         />
     );
-
+    console.log(['cell created', cell]);
     (column.locked) ? lockedCells.push(cell) : cells.push(cell);
   },
 
