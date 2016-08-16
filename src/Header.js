@@ -14,7 +14,7 @@ type Column = {
 const Header = React.createClass({
   propTypes: {
     columnMetrics: PropTypes.shape({  width: PropTypes.number.isRequired, columns: PropTypes.any }).isRequired,
-    mergeHeaderTitle: React.PropTypes.element,
+    mergeHeaderTitle: React.PropTypes.any,
     totalWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.number.isRequired,
     headerRows: PropTypes.array.isRequired,

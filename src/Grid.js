@@ -14,7 +14,7 @@ const Grid = React.createClass({
     minHeight: PropTypes.number,
     totalWidth: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     headerRows: PropTypes.oneOfType([PropTypes.array, PropTypes.func]),
-    mergeHeaderTitle: React.PropTypes.element,
+    mergeHeaderTitle: React.PropTypes.any,
     rowHeight: PropTypes.number,
     rowRenderer: PropTypes.func,
     emptyRowsView: PropTypes.func,

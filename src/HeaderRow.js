@@ -23,7 +23,7 @@ const HeaderRow = React.createClass({
   propTypes: {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.number.isRequired,
-    mergeHeaderTitle: PropTypes.element,
+    mergeHeaderTitle: PropTypes.any,
     columns: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onColumnResize: PropTypes.func,
     onSort: PropTypes.func.isRequired,
@@ -99,13 +99,17 @@ const HeaderRow = React.createClass({
   },
 
   getStyle(): HeaderRowStyle {
-    let height = this.props.height;
     return {
       overflow: 'hidden',
       width: '100%',
-      height: this.props.mergeHeaderTitle ?   (height / 2) : height,
+      height: this.props.height,
       position: 'absolute'
     };
+  },
+
+  getHeight(): int {
+    let height = this.props.height;
+    return this.props.mergeHeaderTitle ? height / 2 : height;
   },
 
   generateHeaderCell(i, cells, lockedCells) {
@@ -114,14 +118,12 @@ const HeaderRow = React.createClass({
     if (column.key === 'select-row' && this.props.rowType === 'filter') {
       _renderer = <div></div>;
     }
-
     let HeaderCell = column.draggable ? this.props.draggableHeaderCell : BaseHeaderCell;
-
     let cell = (
       <HeaderCell
         ref={i}
         key={i}
-        height={this.props.height}
+        height={this.getHeight()}
         column={column}
         renderer={_renderer}
         resizing={this.props.resizing === column}
