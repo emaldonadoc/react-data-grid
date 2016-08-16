@@ -51,6 +51,7 @@ const ReactDataGrid = React.createClass({
     rowHeight: React.PropTypes.number.isRequired,
     headerRowHeight: React.PropTypes.number,
     minHeight: React.PropTypes.number.isRequired,
+    mergeHeaderTitle: React.PropTypes.element,
     minWidth: React.PropTypes.number,
     enableRowSelect: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.string]),
     onRowUpdated: React.PropTypes.func,
@@ -872,6 +873,7 @@ const ReactDataGrid = React.createClass({
             rowsCount={this.props.rowsCount}
             rowHeight={this.props.rowHeight}
             cellMetaData={cellMetaData}
+            mergeHeaderTitle={this.props.mergeHeaderTitle}
             selectedRows={this.getSelectedRows()}
             rowSelection={this.getRowSelectionProps()}
             expandedRows={this.state.expandedRows}

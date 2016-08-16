@@ -23,6 +23,7 @@ const HeaderRow = React.createClass({
   propTypes: {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.number.isRequired,
+    mergeHeaderTitle: PropTypes.element,
     columns: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onColumnResize: PropTypes.func,
     onSort: PropTypes.func.isRequired,
@@ -98,10 +99,11 @@ const HeaderRow = React.createClass({
   },
 
   getStyle(): HeaderRowStyle {
+    let height = this.props.height;
     return {
       overflow: 'hidden',
       width: '100%',
-      height: this.props.height,
+      height: this.props.mergeHeaderTitle ?   (height / 2) : height,
       position: 'absolute'
     };
   },
@@ -127,7 +129,6 @@ const HeaderRow = React.createClass({
         onResizeEnd={this.props.onColumnResizeEnd}
         />
     );
-    console.log(['cell created', cell]);
     (column.locked) ? lockedCells.push(cell) : cells.push(cell);
   },
 
