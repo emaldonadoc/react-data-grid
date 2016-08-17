@@ -596,11 +596,14 @@ const ReactDataGrid = React.createClass({
     return offsetHeight;
   },
 
-  getHeaderRows(): Array<{ref: string; height: number;}> {
+  // TODO check headerRowHeight logic
+  getHeaderHeight() {
     let headerHeight = this.props.headerRowHeight || this.props.rowHeight;
-    let height = this.props.mergeHeaderTitle ? headerHeight * 2 : headerHeight;
+    return this.props.mergeHeaderTitle ? headerHeight * 2 : headerHeight;
+  },
 
-    let rows = [{ ref: 'row', height: height, rowType: 'header' }];
+  getHeaderRows(): Array<{ref: string; height: number;}> {
+    let rows = [{ ref: 'row', height: this.getHeaderHeight(), rowType: 'header' }];
     if (this.state.canFilter === true) {
       rows.push({
         ref: 'filterRow',

@@ -96,6 +96,11 @@ const Header = React.createClass({
         minHeight: rowHeight
       };
 
+      let height = row.height || this.props.height;
+      if (this.props.mergeHeaderTitle) {
+        height = height / 2;
+        console.log(['height', height]);
+      }
       headerRows.push(<HeaderRow
         key={row.ref}
         ref={row.ref}
@@ -104,7 +109,7 @@ const Header = React.createClass({
         onColumnResize={this.onColumnResize}
         onColumnResizeEnd={this.onColumnResizeEnd}
         width={columnMetrics.width}
-        height={row.height || this.props.height}
+        height={height}
         columns={columnMetrics.columns}
         resizing={resizeColumn}
         draggableHeaderCell={this.props.draggableHeaderCell}

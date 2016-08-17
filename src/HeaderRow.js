@@ -14,6 +14,7 @@ const HeaderRowStyle  = {
   overflow: React.PropTypes.string,
   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   height: React.PropTypes.number,
+  bottom: React.PropTypes.number,
   position: React.PropTypes.string
 };
 
@@ -103,13 +104,8 @@ const HeaderRow = React.createClass({
       overflow: 'hidden',
       width: '100%',
       height: this.props.height,
-      position: 'absolute'
+      position: 'absolute'      
     };
-  },
-
-  getHeight(): int {
-    let height = this.props.height;
-    return this.props.mergeHeaderTitle ? height / 2 : height;
   },
 
   generateHeaderCell(i, cells, lockedCells) {
@@ -123,7 +119,7 @@ const HeaderRow = React.createClass({
       <HeaderCell
         ref={i}
         key={i}
-        height={this.getHeight()}
+        height={this.props.height}
         column={column}
         renderer={_renderer}
         resizing={this.props.resizing === column}
