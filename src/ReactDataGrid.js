@@ -51,6 +51,7 @@ const ReactDataGrid = React.createClass({
     rowHeight: React.PropTypes.number.isRequired,
     headerRowHeight: React.PropTypes.number,
     minHeight: React.PropTypes.number.isRequired,
+    mergeHeaderTitle: React.PropTypes.any,
     minWidth: React.PropTypes.number,
     enableRowSelect: React.PropTypes.oneOfType([React.PropTypes.bool, React.PropTypes.string]),
     onRowUpdated: React.PropTypes.func,
@@ -596,7 +597,10 @@ const ReactDataGrid = React.createClass({
   },
 
   getHeaderRows(): Array<{ref: string; height: number;}> {
-    let rows = [{ ref: 'row', height: this.props.headerRowHeight || this.props.rowHeight, rowType: 'header' }];
+    let headerHeight = this.props.headerRowHeight || this.props.rowHeight;
+    let height = this.props.mergeHeaderTitle ? headerHeight * 2 : headerHeight;
+
+    let rows = [{ ref: 'row', height: height, rowType: 'header' }];
     if (this.state.canFilter === true) {
       rows.push({
         ref: 'filterRow',
@@ -872,6 +876,7 @@ const ReactDataGrid = React.createClass({
             rowsCount={this.props.rowsCount}
             rowHeight={this.props.rowHeight}
             cellMetaData={cellMetaData}
+            mergeHeaderTitle={this.props.mergeHeaderTitle}
             selectedRows={this.getSelectedRows()}
             rowSelection={this.getRowSelectionProps()}
             expandedRows={this.state.expandedRows}

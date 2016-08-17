@@ -23,6 +23,7 @@ const HeaderRow = React.createClass({
   propTypes: {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.number.isRequired,
+    mergeHeaderTitle: PropTypes.any,
     columns: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
     onColumnResize: PropTypes.func,
     onSort: PropTypes.func.isRequired,
@@ -76,10 +77,6 @@ const HeaderRow = React.createClass({
     return <SortableHeaderCell columnKey={column.key} onSort={this.props.onSort} sortDirection={sortDirection}/>;
   },
 
-  getMergededHeaderCell(subColumn){
-    return <MergeHeaderCell subcolumn={subColumn}/>;
-  },
-
   getHeaderRenderer(column) {
     let renderer;
     if (column.headerRenderer) {
@@ -98,7 +95,7 @@ const HeaderRow = React.createClass({
       }
     }
 
-    return (column.mergered) ? this.getMergededHeaderCell(renderer) : renderer;
+    return renderer;
   },
 
   getStyle(): HeaderRowStyle {
@@ -110,33 +107,38 @@ const HeaderRow = React.createClass({
     };
   },
 
+  getHeight(): int {
+    let height = this.props.height;
+    return this.props.mergeHeaderTitle ? height / 2 : height;
+  },
+
+  generateHeaderCell(i, cells, lockedCells) {
+    let column = this.getColumn(this.props.columns, i);
+    let _renderer = this.getHeaderRenderer(column);
+    if (column.key === 'select-row' && this.props.rowType === 'filter') {
+      _renderer = <div></div>;
+    }
+    let HeaderCell = column.draggable ? this.props.draggableHeaderCell : BaseHeaderCell;
+    let cell = (
+      <HeaderCell
+        ref={i}
+        key={i}
+        height={this.getHeight()}
+        column={column}
+        renderer={_renderer}
+        resizing={this.props.resizing === column}
+        onResize={this.props.onColumnResize}
+        onResizeEnd={this.props.onColumnResizeEnd}
+        />
+    );
+    (column.locked) ? lockedCells.push(cell) : cells.push(cell);
+  },
+
   getCells(): Array<HeaderCell> {
     let cells = [];
     let lockedCells = [];
     for (let i = 0, len = this.getSize(this.props.columns); i < len; i++) {
-      let column = this.getColumn(this.props.columns, i);
-      let _renderer = this.getHeaderRenderer(column);
-      if (column.key === 'select-row' && this.props.rowType === 'filter') {
-        _renderer = <div></div>;
-      }
-      let HeaderCell = column.draggable ? this.props.draggableHeaderCell : BaseHeaderCell;
-      let cell = (
-        <HeaderCell
-          ref={i}
-          key={i}
-          height={this.props.height}
-          column={column}
-          renderer={_renderer}
-          resizing={this.props.resizing === column}
-          onResize={this.props.onColumnResize}
-          onResizeEnd={this.props.onColumnResizeEnd}
-          />
-      );
-      if (column.locked) {
-        lockedCells.push(cell);
-      } else {
-        cells.push(cell);
-      }
+      this.generateHeaderCell(i, cells, lockedCells);
     }
 
     return cells.concat(lockedCells);
