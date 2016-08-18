@@ -1,4 +1,5 @@
 const React               = require('react');
+const _                   = require('lodash');
 const ReactDOM            = require('react-dom');
 const joinClasses         = require('classnames');
 const shallowCloneObject  = require('./shallowCloneObject');
@@ -82,25 +83,22 @@ const Header = React.createClass({
     }
     let headerRows = [];
     this.props.headerRows.forEach((row, index) => {
-      // To allow header filters to be visible
-      let rowHeight = 'auto';
-      if (row.rowType === 'filter') {
-        rowHeight = '500px';
-      }
       let headerRowStyle = {
         position: 'absolute',
-        top: this.getCombinedHeaderHeights(index),
         left: 0,
         width: this.props.totalWidth,
         overflowX: 'hidden',
-        minHeight: rowHeight
+        minHeight: row.rowType === 'filter' ? '500px' : 'auto'
       };
 
       let height = row.height || this.props.height;
       if (this.props.mergeHeaderTitle) {
         height = height / 2;
-        console.log(['height', height]);
+        _.extend(headerRowStyle, {bottom: 0});
+      } else {
+        _.extend(headerRowStyle, {top: this.getCombinedHeaderHeights(index)});
       }
+
       headerRows.push(<HeaderRow
         key={row.ref}
         ref={row.ref}

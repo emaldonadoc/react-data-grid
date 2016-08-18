@@ -66,7 +66,7 @@ const HeaderCell = React.createClass({
     return this.props.renderer({column: this.props.column});
   },
 
-  getStyle(): {width:number; left: number; display: string; position: string; overflow: string; height: number; margin: number; textOverflow: string; whiteSpace: string } {
+  getStyle(): {width:number; left: number; display: string; position: string; overflow: string; height: number; margin: number; textOverflow: string; whiteSpace: string; } {
     return {
       width: this.props.column.width,
       left: this.props.column.left,
